@@ -14,12 +14,24 @@ def levy_flight(current_pos, beta):
     step = levy_distribution(beta)
     return [(x[0] + step * (x[0] - current_pos[i][0]), x[1] + step * (x[1] - current_pos[i][1])) for i, x in enumerate(current_pos)]
 
+import math
+
 def average_latency(data_centers, user_locations):
-    total_latency = 0
-    for user in user_locations:
-        nearest_data_center = min(data_centers, key=lambda dc: math.dist(list(dc), list(user)))
-        total_latency += math.dist(list(nearest_data_center), list(user))
-    return total_latency / len(user_locations)
+  """
+  Calculate the average latency between user locations and the nearest data center.
+
+  Args:
+    data_centers (list): A list of coordinates representing the locations of data centers.
+    user_locations (list): A list of coordinates representing the locations of users.
+
+  Returns:
+    float: The average latency between user locations and the nearest data center.
+  """
+  total_latency = 0
+  for user in user_locations:
+    nearest_data_center = min(data_centers, key=lambda dc: math.dist(list(dc), list(user)))
+    total_latency += math.dist(list(nearest_data_center), list(user))
+  return total_latency / len(user_locations)
 
 
 def cuckoo_search(num_data_centers, num_cuckoos, max_iterations, beta, p_a,user_locations):
@@ -68,8 +80,6 @@ def cuckoo_search(num_data_centers, num_cuckoos, max_iterations, beta, p_a,user_
     # Update population and fitness
     population, fitness = zip(*combined)
 
-    # Abandonment (optional)
-    # ... (implement logic to remove and replace abandoned cuckoos)
 
   # Select the best cuckoo (placement with lowest average latency)
   best_index = fitness.index(min(fitness))
@@ -98,3 +108,5 @@ for i, location in enumerate(best_placement):
 # Calculate and print the final average latency
 final_latency = average_latency(best_placement, user_locations)
 print(f"\nFinal Average Latency: {final_latency}")
+
+
