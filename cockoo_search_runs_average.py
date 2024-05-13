@@ -13,7 +13,7 @@ def levy_distribution(beta):
 
 def levy_flight(current_pos, beta):
     step = levy_distribution(beta)
-    return [(x[0] + step * (x[0] - current_pos[i][0]), x[1] + step * (x[1] - current_pos[i][1])) for i, x in enumerate(current_pos)]
+    return [(step+x[0],step+x[1]) for i, x in enumerate(current_pos)]
 
 def average_latency(data_centers, user_locations):
     total_latency = 0
@@ -69,8 +69,6 @@ def cuckoo_search(num_data_centers, num_cuckoos, max_iterations, beta, p_a,user_
     # Update population and fitness
     population, fitness = zip(*combined)
 
-    # Abandonment (optional)
-    # ... (implement logic to remove and replace abandoned cuckoos)
 
   # Select the best cuckoo (placement with lowest average latency)
   best_index = fitness.index(min(fitness))
@@ -103,10 +101,13 @@ for _ in range(50):
 average_best_latency = sum(best_latencies) / len(best_latencies)
 print(f"Average Best Latency: {average_best_latency}")
 
+
 # Find and print the best placement
 index_of_best_latency = best_latencies.index(min(best_latencies))
 best_placement = best_placements[index_of_best_latency]
-print(f"Best Data Center Placement: {best_placement}")
+print(f"Best Data Center Placement: ")
+for i, location in enumerate(best_placement):
+  print(f"Data Center {i+1}: ({location[0]}, {location[1]})")
 
 # Plot the convergence curve
 plt.plot(best_latencies)

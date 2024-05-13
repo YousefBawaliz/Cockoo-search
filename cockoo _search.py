@@ -12,7 +12,8 @@ def levy_distribution(beta):
 
 def levy_flight(current_pos, beta):
     step = levy_distribution(beta)
-    return [(x[0] + step * (x[0] - current_pos[i][0]), x[1] + step * (x[1] - current_pos[i][1])) for i, x in enumerate(current_pos)]
+    print("step: ", step)
+    return [(step+x[0],step+x[1]) for i, x in enumerate(current_pos)]
 
 import math
 
@@ -64,6 +65,7 @@ def cuckoo_search(num_data_centers, num_cuckoos, max_iterations, beta, p_a,user_
       current_pos = population[i]
       new_pos = levy_flight(current_pos, beta)
       new_population.append(new_pos)
+
 
     # Calculate fitness for new cuckoos
     new_fitness = [average_latency(cuckoo, user_locations) for cuckoo in new_population]
